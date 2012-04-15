@@ -1,0 +1,6 @@
+<% @drugs.each do |drug| %>
+	<p class="well">
+		<%= link_to drug.brandName, drug_path(drug) %>
+	</p>
+<% end -%>
+

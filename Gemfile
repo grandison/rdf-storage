@@ -29,6 +29,7 @@ gem 'rdf-do'
 gem 'spira'
 gem 'equivalent-xml'
 gem 'sparql'
+gem 'mongrel'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

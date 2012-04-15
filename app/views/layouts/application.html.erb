@@ -7,7 +7,20 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <ul class="nav">
+       	<li class="<%= current_page?(root_path) ? 'active' : '' %>">
+      		<%= link_to "Хранилище лекарств", root_path %>
+      	</li>
+      	<li class="<%= current_page?(calc_drugs_path) ? 'active' : '' %>">
+      		<%= link_to "Калькулятор лекарств", calc_drugs_path %>
+      	</li>
+      </ul>	
+    </div>
+  </div>
+</div>
 <%= yield %>
 
 </body>

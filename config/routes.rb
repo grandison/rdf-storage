@@ -1,4 +1,11 @@
 DrugSite::Application.routes.draw do
+  resources :drugs, :only => [:index, :show] do 
+    collection do
+      get 'calc'
+      get 'effects'
+    end
+  end
+  root :to => "drugs#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

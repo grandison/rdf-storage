@@ -3,9 +3,7 @@ class Drug < ActiveRecord::Base
 	base_uri "http://osmanov.me/drugs/"
 	type URI.new("http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/drugs")
 	property :intern_title, :predicate => URI.new("http://osmanov.me/intern_title"), :type => String
-	has_many :brandNames,  :predicate => FOAF.name, :type => String
-	has_many :conflict_effects, :predicate => URI.new("http://osmanov.me/conflict"), :type => String
-	has_many :increase_effects, :predicate => URI.new("http://osmanov.me/increase"), :type => String
+	property :brandName,  :predicate => FOAF.name, :type => String
 	has_many :drugCategories, :predicate => URI.new("http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/drugType"), :type => :DrugCategory
 	has_many :dosageForms, :predicate => URI.new("http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/dosageForm"), :type => String
 	property :pharmacology, :predicate => URI.new("http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/pharmacology"), :type => String
@@ -45,5 +43,45 @@ class Drug < ActiveRecord::Base
 		"
 
 		self.class.sparql_query(query).map{|d| d[:drug].as(Drug)}
+	end
+
+	def self.all
+		query = "
+			SELECT DISTINCT ?drug 
+			WHERE {
+				?drug <#{RDF.type}> <#{@type}>
+			}
+		"
+
+		self.sparql_query(query).map{|d| d[:drug].as(Drug)}
+	end
+
+	def id
+		uri.to_s.split("/")[-1]
+	end
+
+	def self.drug_names
+		query = "
+			SELECT DISTINCT ?drugname 
+			WHERE {
+				?drug <#{FOAF.name}> ?drugname
+			}
+		"
+
+		self.sparql_query(query).map{|d| d[:drugname].to_s}
+	end
+
+	def self.contraindications_of(drugs)
+		names_query = drugs.map do |drugname|
+			"{ ?drug <#{FOAF.name}> '#{drugname}' }"
+		end.join(" UNION ")
+		query = "
+				SELECT ?effects
+				WHERE {
+					#{names_query} .
+					?drug <http://www4.wiwiss.fu-berlin.de/dailymed/resource/dailymed/contraindication> ?effects
+				}
+			"
+		sparql_query(query).map(&:effects).join(",")
 	end
 end

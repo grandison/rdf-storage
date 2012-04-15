@@ -1,0 +1,56 @@
+<table class="table table-striped">
+  <tr>
+    <td>Торговое наименование: </td>
+    <td><%= @drug.brandName %></td>
+  </tr>
+  <tr>
+    <td>Групповая принадлежность: </td>
+    <td><%= @drug.drugCategories.map(&:name).join(",") %> </td>
+  </tr>
+  <tr>
+    <td>Описание действующего вещества: </td>
+    <td><%= @drug.drugParts.map(&:name).join(",") %> </td>
+  </tr>
+  <tr>
+    <td>Лекарственная форма: </td>
+    <td><%= @drug.dosageForms.to_a.join(",") %> </td>
+  </tr>
+  <tr>
+    <td>Фармакологическое действие: </td>
+    <td><%= @drug.pharmacology %> </td>
+  </tr>
+  <tr>
+    <td>Показания: </td>
+    <td><%= @drug.indications.to_a.join(",") %> </td>
+  </tr>
+  <tr>
+    <td>Противопоказания: </td>
+    <td><%= @drug.contraindications.to_a.join(",") %> </td>
+  </tr>
+  <tr>
+    <td>Побочные действия: </td>
+    <td><%= @drug.sideEffects.to_a.join(",") %> </td>
+  </tr>
+  <tr>
+    <td>Способ применения и дозы: </td>
+    <td><%= @drug.dosage %> </td>
+  </tr>
+  <tr>
+    <td>Особые указания: </td>
+    <td><%= @drug.special %> </td>
+  </tr>
+  <tr>
+    <td>Похожие лекарства:</td>
+    <td>
+      <ul>
+        <% @drug.similar.each do |sim_drug| %>
+          <li>
+            <%= link_to sim_drug.intern_title, drug_path(sim_drug) %>
+          </li>
+        <% end -%>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+

@@ -1,0 +1,74 @@
+<script type="text/javascript">
+	$(function(){
+		selected_drugs = [];
+		var getContraIndications = function(drugs){
+			$.get("<%= effects_drugs_path %>", {
+				type: 'contraindications',
+				drugs: selected_drugs
+			}, function (response) {
+				$(".contra-indications").text(response);
+			});
+		};
+		$(".select_drugs #drugs").typeahead({
+			source: <%= raw @drug_names.inspect %>
+		});
+		$(".select_drugs .btn").click(function(e){
+			e.preventDefault();
+			var drug_name = $(".select_drugs #drugs").val();
+			if (drug_name == "") {
+				return false;
+			};
+			selected_drugs.push(drug_name);
+			$(".selected_drugs").append("<li>" + drug_name + "</li>")
+			$(".select_drugs #drugs").val("")
+			getContraIndications(selected_drugs);
+		});
+		$(".select_drugs .clear_selected_drugs").click(function(e){
+			selected_drugs = [];
+			$(".selected_drugs").html("");			
+			$(",contra-indications").html("");
+			e.preventDefault();
+		});
+	});
+</script>
+<div class="row-fluid">
+	<div class="span3">
+		<div class="well">
+			Выберите лекарства
+		</div>
+	</div>
+	<div class="span6">
+		<%= form_tag effects_drugs_path, :class => "select_drugs form-horizontal" do %>
+			<fieldset>
+				<div class="input-append">
+					<%= text_field_tag :drugs %>
+					<button class="btn" href="#">Выбрать</button>
+					<button class="btn btn-danger clear_selected_drugs" href="#">Очистить</button>
+				</div>
+			</fieldset>
+		<% end -%>
+		<div class="row-fluid">
+			<div class="span6">
+				<ul class="selected_drugs">
+				</ul>
+			</div>
+			<div class="span6">
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<div class="row-fluid">
+	<div class="span3">
+		<div class="well">
+			Общие противопоказания:
+		</div>
+	</div>
+	<div class="span6">
+		<div class="contra-indications">
+		</div>
+	</div>
+</div>
