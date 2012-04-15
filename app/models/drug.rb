@@ -34,12 +34,16 @@ class Drug < ActiveRecord::Base
 # 		sparql.query(query).map{|s| s[:contraindication] }
 # 	end
 
-	def test
-		repo = Spira.repositories[:default]
-		repo.query(
-			:drug => {
-				URI.new("http://osmanov.me/drugComponent") => self.drugParts
+	def similar
+		query = "
+			SELECT ?drug 
+			WHERE {
+				?drug <http://osmanov.me/drugComponent> ?drugPart .
+				<#{uri}> <http://osmanov.me/drugComponent> ?drugPart
+				FILTER (?drug != <#{uri}>)
 			}
-		)
+		"
+
+		self.class.sparql_query(query).map{|d| d[:drug].as(Drug)}
 	end
 end
