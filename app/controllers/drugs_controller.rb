@@ -21,6 +21,9 @@ class DrugsController < ApplicationController
 		if params["type"] == "contraindications"
 			result = Drug.contraindications_of(drugs)
 		end
+		if params["type"] == "toxicities"
+			result = Drug.toxicity_of(drugs)
+		end
 		render :text => result
 	end
 end

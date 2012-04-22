@@ -34,7 +34,6 @@ drugs[0,100].each do |drug|
 	drugPartName = drug["Описание действующего вещества (МНН)"]
 	if drugPartName 
 		if drugParts[drugPartName]
-			p drugID
 			drugPart = DrugPart.for(drugParts[drugPartName])
 		else
 			drugPart = DrugPart.for(drugPartID)
@@ -49,7 +48,7 @@ drugs[0,100].each do |drug|
 	drug_in_base.dosageForms.merge(drug["Лекарственная форма"].split(",")) if drug["Лекарственная форма"]
 	drug_in_base.pharmacology = drug["Фармакологическое действие"]
 	drug_in_base.indications.merge(drug["Показания"].split(",")) if drug["Показания"]
-	drug_in_base.contraindications.merge(drug["Противопоказания"].split(",")) if drug["Противопоказания"]
+	drug_in_base.contraindications.merge(drug["Противопоказания"].split(/[\,\.]/)) if drug["Противопоказания"]
 	drug_in_base.sideEffects.merge(drug["Побочные действия"].split(",")) if drug["Побочные действия"]
 	drug_in_base.dosage = drug["Способ применения и дозы"]
 	drug_in_base.save!

@@ -9,6 +9,15 @@
 				$(".contra-indications").text(response);
 			});
 		};
+
+		var getToxicities = function(drugs){
+			$.get("<%= effects_drugs_path %>", {
+				type: 'toxicities',
+				drugs: selected_drugs
+			}, function (response) {
+				$(".toxicities").text(response);
+			});
+		};
 		$(".select_drugs #drugs").typeahead({
 			source: <%= raw @drug_names.inspect %>
 		});
@@ -22,11 +31,13 @@
 			$(".selected_drugs").append("<li>" + drug_name + "</li>")
 			$(".select_drugs #drugs").val("")
 			getContraIndications(selected_drugs);
+			getToxicities(selected_drugs);
 		});
 		$(".select_drugs .clear_selected_drugs").click(function(e){
 			selected_drugs = [];
 			$(".selected_drugs").html("");			
 			$(".contra-indications").html("");
+			$(".toxicities").html("")
 			e.preventDefault();
 		});
 	});
@@ -69,6 +80,19 @@
 	</div>
 	<div class="span6">
 		<div class="contra-indications">
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<div class="row-fluid">
+	<div class="span3">
+		<div class="well">
+			Общие побочные эффекты:
+		</div>
+	</div>
+	<div class="span6">
+		<div class="toxicities">
 		</div>
 	</div>
 </div>

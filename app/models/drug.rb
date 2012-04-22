@@ -84,4 +84,18 @@ class Drug < ActiveRecord::Base
 			"
 		sparql_query(query).map(&:effects).join(",")
 	end
+
+	def self.toxicity_of(drugs)
+		names_query = drugs.map do |drugname|
+			"{ ?drug <#{FOAF.name}> '#{drugname}' }"
+		end.join(" UNION ")
+		query = "
+				SELECT ?toxicity
+				WHERE {
+					#{names_query} .
+					?drug <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/toxicity> ?toxicity
+				}
+			"
+		sparql_query(query).map(&:toxicity).join(",")
+	end
 end
