@@ -5,6 +5,8 @@ DrugSite::Application.routes.draw do
       get 'effects'
     end
   end
+  get 'sparql' => 'sparql#sparql', :as => "sparql"
+  get 'sparql_form' => 'sparql#show'
   root :to => "drugs#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.

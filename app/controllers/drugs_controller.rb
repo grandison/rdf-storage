@@ -1,10 +1,15 @@
 class DrugsController < ApplicationController
+
 	def index
 		@drugs = Drug.all
 	end
 
 	def show
 		@drug = Drug.for(params[:id])
+		respond_to do |format|
+			format.html
+			format.rdf {render :inline => @drug.to_rdf}
+		end
 	end
 
 	def calc

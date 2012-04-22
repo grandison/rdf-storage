@@ -17,6 +17,9 @@
       	<li class="<%= current_page?(calc_drugs_path) ? 'active' : '' %>">
       		<%= link_to "Калькулятор лекарств", calc_drugs_path %>
       	</li>
+        <li class="<%= current_page?(sparql_form_path) ? 'active' : '' %>">
+          <%= link_to "SPARQL", sparql_form_path %>
+        </li>
       </ul>	
     </div>
   </div>

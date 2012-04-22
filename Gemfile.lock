@@ -105,6 +105,9 @@ GEM
       rdf (>= 0.2.3)
     rdf-isomorphic (0.3.4)
       rdf (>= 0.2.3)
+    rdf-rdfxml (0.3.6)
+      rdf (>= 0.3.4)
+      rdf-xsd (>= 0.3.5)
     rdf-xsd (0.3.5)
       nokogiri (>= 1.5.0)
       rdf (>= 0.3.4)
@@ -162,6 +165,7 @@ DEPENDENCIES
   rails (= 3.2.3)
   rdf
   rdf-do
+  rdf-rdfxml
   sass-rails (~> 3.2.3)
   sparql
   spira
